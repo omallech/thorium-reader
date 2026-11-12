@@ -54,7 +54,7 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
         const readerWin = yield* callTyped(() => getReaderWindowFromDi(sender.identifier));
 
         if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-            readerWin.setFullScreen(action.payload.full);
+            readerWin.setKiosk(action.payload.full);
         }
     }
 }

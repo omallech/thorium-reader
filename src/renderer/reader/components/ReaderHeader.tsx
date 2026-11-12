@@ -49,7 +49,6 @@ import * as PlayIcon from "readium-desktop/renderer/assets/icons/audio-play-icon
 import * as SkipPrevious from "readium-desktop/renderer/assets/icons/audio-previous-icon.svg";
 import * as StopIcon from "readium-desktop/renderer/assets/icons/audio-stop-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
-import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
 import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
 import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
@@ -134,7 +133,7 @@ interface IBaseProps extends TranslatorProps {
     // handleMenuClick: (open?: boolean) => void;
     // handleSettingsClick: (open?: boolean) => void;
     fullscreen: boolean;
-    // handleFullscreenClick: () => void;
+    handleFullscreenClick: () => void;
 
     handleTTSPlay: () => void;
     handleTTSPause: () => void;
@@ -1393,23 +1392,25 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <Focusable>
                             <button
                                 className={classNames(stylesReader.menu_button)}
-                                onClick={() => {
-                                    this.props.ReaderSettingsProps.setZenModeAndFXLZoom(!this.props.ReaderSettingsProps.zenMode, this.props.ReaderSettingsProps.fxlZoomPercent);
-                                }}
+                                onClick={this.props.handleFullscreenClick}
                                 ref={this.enableFullscreenRef}
                                 aria-pressed={this.props.fullscreen}
-                                aria-label={__("reader.navigation.ZenModeTitle")}
+                                aria-label={__("settings.keyboard.list.ToggleReaderFullscreen.name")}
                             >
-                                <SVG ariaHidden={true} svg={viewMode} />
+                                <SVG
+                                    ariaHidden={true}
+                                    svg={this.props.fullscreen ? ExitFullscreenIcon : FullscreenIcon}
+                                    className={this.props.fullscreen ? stylesReaderHeader.active_svg : undefined}
+                                />
                             </button>
                             </Focusable>
                             <ToolTippy
                                 immediate={true}
                                 placement="bottom"
-                                label={__("reader.navigation.ZenModeTitle")}
-                                tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.ToggleReaderZenMode, this.props.keyboardShortcuts.ToggleReaderFullscreen]}
-                                tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleReaderZenMode.name"), __("settings.keyboard.list.ToggleReaderFullscreen.name")]}
-                                tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleReaderZenMode.description"), __("settings.keyboard.list.ToggleReaderFullscreen.description")]} />
+                                label={__("settings.keyboard.list.ToggleReaderFullscreen.name")}
+                                tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.ToggleReaderFullscreen]}
+                                tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleReaderFullscreen.name")]}
+                                tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleReaderFullscreen.description")]} />
                             </TooltipTrigger>
                         </li>
                     </ul>

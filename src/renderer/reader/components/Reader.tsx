@@ -1213,7 +1213,7 @@ class Reader extends React.Component<IProps, IState> {
                         // handleMenuClick={this.handleMenuButtonClick}
                         // handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
-                        // handleFullscreenClick={this.handleFullscreenClick}
+                        handleFullscreenClick={this.handleFullscreenClick}
                         handleReaderClose={this.handleReaderClose}
                         isOnSearch={this.props.searchEnable}
                         ReaderSettingsProps={ReaderSettingsProps}
@@ -1244,8 +1244,11 @@ class Reader extends React.Component<IProps, IState> {
                         <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                         <Focusable>
                         <button onClick={() => {
-                            // this.setState({ zenMode: false });
-                            ReaderSettingsProps.setZenModeAndFXLZoom(false, this.state.fxlZoomPercent);
+                            if (this.state.fullscreen) {
+                                this.handleFullscreenClick();
+                            } else {
+                                ReaderSettingsProps.setZenModeAndFXLZoom(false, this.state.fxlZoomPercent);
+                            }
                         }}
                         className={stylesReader.button_exitZen}
                         style={{ opacity: isPaginated ? "1" : "0" }}
@@ -3437,8 +3440,10 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleFullscreenClick() {
-        this.props.toggleFullscreen(!this.state.fullscreen);
-        this.setState({ fullscreen: !this.state.fullscreen });
+        const fullscreen = !this.state.fullscreen;
+        this.props.toggleFullscreen(fullscreen);
+        this.setState({ fullscreen });
+        this.setZenModeAndFXLZoom(fullscreen, this.state.fxlZoomPercent);
 
         // if (this.props.menuOpen) {
             this.props.toggleMenu({open: false});
